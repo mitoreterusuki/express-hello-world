@@ -6,5 +6,23 @@
   </head>
   <body>
 You are redirected!!
-  </body>
+  <script>
+// URLからパラメータを取得する関数
+function getParameterByName(name, url) {
+    if (!url) url = window.location.href;
+    name = name.replace(/[\[\]]/g, '\\$&');
+    var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, ' '));
+}
+
+// LINEログインで取得したユーザーIDを取得する
+var userId = getParameterByName('user_id');
+
+// HTMLファイル内の任意の要素にユーザーIDを表示する
+document.getElementById('user-id').innerHTML = userId;
+    </script>
+</body>
 </html>
