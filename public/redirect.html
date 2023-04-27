@@ -5,40 +5,15 @@
   <title>LINEログインのリダイレクト先</title>
 </head>
 <body>
-  <h1>LINEログインのリダイレクト先</h1>
+  <h1>LINEログインのリダイレクト先のコードだけ</h1>
   <script>
-    const request = new XMLHttpRequest();
-    const client_id = '1660974941';
-    const client_secret = '7ebddfe06ca73230cd01c7a0b5ca2c58';
-    const redirect_uri = 'https://ichiline.cyclic.app/redirect.html';
-    
     // URLから "code" パラメーターを取得
     const code = new URLSearchParams(window.location.search).get('code');
 
-    // LINEのアクセストークンを取得するためのリクエストを送信
-    request.open('POST', 'https://api.line.me/oauth2/v2.1/token');
-    request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-    request.onreadystatechange = function() {
-      if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
-        const access_token = JSON.parse(this.responseText).access_token;
-
-        // LINEのプロフィール情報を取得するためのリクエストを送信
-        const profileRequest = new XMLHttpRequest();
-        profileRequest.open('GET', 'https://api.line.me/v2/profile');
-        profileRequest.setRequestHeader('Authorization', 'Bearer ' + access_token);
-        profileRequest.onreadystatechange = function() {
-          if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
-            const userId = JSON.parse(this.responseText).userId;
-            // user IDを表示
-            const userIdElement = document.createElement('p');
-            userIdElement.innerHTML = 'User ID: ' + userId;
-            document.body.appendChild(userIdElement);
-          }
-        };
-        profileRequest.send();
-      }
-    };
-    request.send('grant_type=authorization_code&code=' + code + '&redirect_uri=' + redirect_uri + '&client_id=' + client_id + '&client_secret=' + client_secret);
+    // codeを表示
+    const codeElement = document.createElement('p');
+    codeElement.innerHTML = 'Code: ' + code;
+    document.body.appendChild(codeElement);
   </script>
 </body>
 </html>
