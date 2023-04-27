@@ -1,42 +1,52 @@
-<!doctype html>
-<html lang=en>
-  <head>
-    <meta charset=utf-8>
-    <title>LINE Login</title>
-  </head>
-  <body>
-    <div id="line-profile"></div>
-    <script>
-      function handleRedirect() {
-        const urlParams = new URLSearchParams(window.location.search);
-        const code = urlParams.get('code');
-        const xhr = new XMLHttpRequest();
-        xhr.open('POST', 'https://api.line.me/oauth2/v2.1/token');
-        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-        xhr.onload = function() {
-          if (xhr.status === 200) {
-            const response = JSON.parse(xhr.responseText);
-            getLineProfile(response.access_token);
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>LINEログインのリダイレクト先</title>
+</head>
+<body>
+  <h1>LINEログインのリダイレクト先</h1>
+  <script>
+    const request = new XMLHttpRequest();
+    const client_id = '1660974941';
+    const client_secret = '7ebddfe06ca73230cd01c7a0b5ca2c58';
+    const redirect_uri = 'https://ichiline.cyclic.app/redirect.html';
+
+    // URLから "code" パラメーターを取得
+    const code = new URLSearchParams(window.location.search).get('code');
+
+    // LINEのアクセストークンを取得するためのリクエストを送信
+    request.open('POST', 'https://api.line.me/oauth2/v2.1/token');
+    request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    request.onreadystatechange = function() {
+      if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
+        const access_token = JSON.parse(this.responseText).access_token;
+
+        // LINEのプロフィール情報を取得するためのリクエストを送信
+        const profileRequest = new XMLHttpRequest();
+        profileRequest.open('GET', 'https://api.line.me/v2/profile');
+        profileRequest.setRequestHeader('Authorization', 'Bearer ' + access_token);
+        profileRequest.onreadystatechange = function() {
+          if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
+            const profile = JSON.parse(this.responseText);
+            // プロフィール情報を表示
+            const nameElement = document.createElement('p');
+            nameElement.innerHTML = 'Name: ' + profile.displayName;
+            document.body.appendChild(nameElement);
+
+            const emailElement = document.createElement('p');
+            emailElement.innerHTML = 'Email: ' + profile.email;
+            document.body.appendChild(emailElement);
+
+            const pictureElement = document.createElement('img');
+            pictureElement.src = profile.pictureUrl;
+            document.body.appendChild(pictureElement);
           }
         };
-        xhr.send('grant_type=authorization_code&code=' + code + '&redirect_uri=https://your-redirect-uri.com&client_id=your-client-id&client_secret=your-client-secret');
+        profileRequest.send();
       }
-
-      function getLineProfile(access_token) {
-        const xhr = new XMLHttpRequest();
-        xhr.open('GET', 'https://api.line.me/v2/profile');
-        xhr.setRequestHeader('Authorization', 'Bearer ' + access_token);
-        xhr.onload = function() {
-          if (xhr.status === 200) {
-            const profile = JSON.parse(xhr.responseText);
-            const lineProfileElement = document.getElementById('line-profile');
-            lineProfileElement.innerHTML = '<p>LINEユーザーID: ' + profile.userId + '</p><p>LINE名前: ' + profile.displayName + '</p>';
-          }
-        };
-        xhr.send();
-      }
-
-      handleRedirect();
-    </script>
-  </body>
+    };
+    request.send('grant_type=authorization_code&code=' + code + '&redirect_uri=' + redirect_uri + '&client_id=' + client_id + '&client_secret=' + client_secret);
+  </script>
+</body>
 </html>
