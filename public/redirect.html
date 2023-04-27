@@ -11,7 +11,7 @@
     const client_id = '1660974941';
     const client_secret = '7ebddfe06ca73230cd01c7a0b5ca2c58';
     const redirect_uri = 'https://ichiline.cyclic.app/redirect.html';
-
+    
     // URLから "code" パラメーターを取得
     const code = new URLSearchParams(window.location.search).get('code');
 
@@ -28,19 +28,11 @@
         profileRequest.setRequestHeader('Authorization', 'Bearer ' + access_token);
         profileRequest.onreadystatechange = function() {
           if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
-            const profile = JSON.parse(this.responseText);
-            // プロフィール情報を表示
-            const nameElement = document.createElement('p');
-            nameElement.innerHTML = 'Name: ' + profile.displayName;
-            document.body.appendChild(nameElement);
-
-            const emailElement = document.createElement('p');
-            emailElement.innerHTML = 'Email: ' + profile.email;
-            document.body.appendChild(emailElement);
-
-            const pictureElement = document.createElement('img');
-            pictureElement.src = profile.pictureUrl;
-            document.body.appendChild(pictureElement);
+            const userId = JSON.parse(this.responseText).userId;
+            // user IDを表示
+            const userIdElement = document.createElement('p');
+            userIdElement.innerHTML = 'User ID: ' + userId;
+            document.body.appendChild(userIdElement);
           }
         };
         profileRequest.send();
