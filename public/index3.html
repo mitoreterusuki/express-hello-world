@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang=en>
+  <head>
+    <meta charset=utf-8>
+    <title>LINE Login</title>
+  </head>
+  <body>
+    <h1>LINEログインのIDを表示するコード。GPT案</h1>
+    <a class="btn btn-primary mb-5" href="//app.cyclic.sh/api/login">Sign in to Cyclic</a><br>
+
+    <a href="https://access.line.me/oauth2/v2.1/authorize?response_type=code&client_id=12121212&redirect_uri=https%3A%2F%2Fichiline.cyclic.app%2Fredirect.html&state=12345abcde&scope=profile%20openid&nonce=09876xyz">LINEでログイン</a>
+
+    <div id="line-profile"></div>
+
+    <script>
+      function getLineProfile(access_token) {
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', 'https://api.line.me/v2/profile');
+        xhr.setRequestHeader('Authorization', 'Bearer ' + access_token);
+        xhr.onload = function() {
+          if (xhr.status === 200) {
+            var profile = JSON.parse(xhr.responseText);
+            var html = '<h2>LINE User ID: ' + profile.userId + '</h2>' +
+                       '<p>Display Name: ' + profile.displayName + '</p>' +
+                       '<img src="' + profile.pictureUrl + '" alt="Profile Picture">';
+            document.getElementById('line-profile').innerHTML = html;
+          } else {
+            console.log('Request failed.  Returned status of ' + xhr.status);
+          }
+        };
+        xhr.send();
+      }
+
+      function handleRedirect() {
+        var code = new URLSearchParams(window.location.search).get('code');
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', 'https://api.line.me/oauth2/v2.1/token');
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.onload = function() {
+          if (xhr.status === 200) {
+            var response = JSON.parse(xhr.responseText);
+            getLineProfile(response.access_token);
+          } else {
+            console.log('Request failed.  Returned status of ' + xhr.status);
+          }
+        };
+        xhr.send('grant_type=authorization_code&code=' + code + '&redirect_uri=https%3A%2F%2Fichiline.cyclic.app%2Fredirect.html&client_id=12121212&client_secret=34343434');
+      }
+
+      if (window.location.pathname === '/redirect.html') {
+        handleRedirect();
+      }
+    </script>
+  </body>
+</html>
