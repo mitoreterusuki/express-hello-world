@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>日報要約</title>
 <style>
-  /* 第一生命のデザインを模倣するためのCSS */
   body {
     font-family: Arial, sans-serif;
     background-color: #f2f2f2;
@@ -80,24 +79,36 @@
   <form>
     <label for="company">会社名:</label>
     <select id="company" name="company">
-      <option value="company1">会社名1</option>
-      <option value="company2">会社名2</option>
-      <option value="company3">会社名3</option>
+      <option value="" selected>選択してください</option>
+      <option value="company1">●●印刷</option>
+      <option value="company2">▲▲開発</option>
+      <option value="company3">■■運輸</option>
     </select>
 
-    <label for="product">商品情報:</label>
+    <label for="product">キーワード:</label>
     <select id="product" name="product">
-      <option value="product1">商品情報1</option>
-      <option value="product2">商品情報2</option>
-      <option value="product3">商品情報3</option>
+      <option value="" selected>選択してください</option>
+      <option value="product1">商品名1</option>
+      <option value="product2">商品名2</option>
+      <option value="product3">商品名3</option>
     </select>
 
-    <label for="period">期間:</label>
+    <label for="purpose">使用目的:</label>
+    <select id="purpose" name="purpose">
+      <option value="" selected>選択してください</option>
+      <option value="purpose1">マーケティング</option>
+      <option value="purpose2">ターゲティング</option>
+      <option value="purpose3">管理職報告</option>
+    </select>
+
+    <label for="period">対象期間:</label>
     <select id="period" name="period">
+      <option value="" selected>選択してください</option>
       <option value="period1">直近の報告のみ</option>
       <option value="period2">今週</option>
       <option value="period3">今月</option>
     </select>
+<br><br>
 
     <label>要約観点:</label>
     <div class="radio-group">
@@ -112,7 +123,7 @@
       </div>
     </div>
 
-
+<br><br>
     <button type="submit">要約</button>
   </form>
 </div>
