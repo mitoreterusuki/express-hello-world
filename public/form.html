@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>日報要約</title>
+<style>
+  /* 第一生命のデザインを模倣するためのCSS */
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #f2f2f2;
+    margin: 0;
+    padding: 0;
+  }
+  .container {
+    max-width: 800px;
+    margin: 20px auto;
+    background-color: #ffffff;
+    border-radius: 5px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  .divider {
+    width: 100%;
+    height: 2px;
+    background-color: #FF0000;
+    margin: 10px 0;
+  }
+  label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+  }
+  select, input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  /* 背景色を指定 */
+  select:not(#input), input:not(#input) {
+    background-color: #fbe2e2;
+  }
+  /* ラジオボタンを横に並べる */
+  .radio-group {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start; /* 左寄せに設定 */
+  }
+  .radio-column {
+    flex: 1;
+    white-space: nowrap; /* 文字列を折り返さないようにする */
+  }
+  .radio-label {
+    display: flex;
+    align-items: center;
+    margin-right: 15px;
+  }
+  .radio-label input {
+    margin-right: 5px;
+  }
+  button {
+    background-color: #0078D4;
+    color: #ffffff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  button:hover {
+    background-color: #005A9E;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>日報要約</h1>
+  <div class="divider"></div>
+  <form>
+    <label for="company">会社名:</label>
+    <select id="company" name="company">
+      <option value="company1">会社名1</option>
+      <option value="company2">会社名2</option>
+      <option value="company3">会社名3</option>
+    </select>
+
+    <label for="product">商品情報:</label>
+    <select id="product" name="product">
+      <option value="product1">商品情報1</option>
+      <option value="product2">商品情報2</option>
+      <option value="product3">商品情報3</option>
+    </select>
+
+    <label for="period">期間:</label>
+    <select id="period" name="period">
+      <option value="period1">直近の報告のみ</option>
+      <option value="period2">今週</option>
+      <option value="period3">今月</option>
+    </select>
+
+    <label>要約観点:</label>
+    <div class="radio-group">
+      <div class="radio-column">
+        <label class="radio-label"><input type="radio" name="summary" value="positive">肯定的</label>
+      </div>
+      <div class="radio-column">
+        <label class="radio-label"><input type="radio" name="summary" value="negative">否定的</label>
+      </div>
+      <div class="radio-column">
+        <label class="radio-label"><input type="radio" name="summary" value="plan">予定・計画</label>
+      </div>
+    </div>
+
+
+    <button type="submit">要約</button>
+  </form>
+</div>
+</body>
+</html>
